@@ -1,3 +1,4 @@
-grain_fromreactor:
-  grains.present:
-    - value: "GRAINFROMREACTOR"
+salt.state:
+  - tgt: {{ data.id }}
+  - sls:
+    - set_customgrain
