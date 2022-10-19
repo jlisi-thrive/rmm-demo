@@ -12,4 +12,4 @@ do_second_thing:
     - header_dict:
         Accept: application/json
         Content-Type: application/json
-    - data: '{{}}'
+    - data: ''
