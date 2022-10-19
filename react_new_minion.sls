@@ -1,6 +1,11 @@
 {% set minionGrains = salt['grains.items']() | tojson %}
+{% set defaultGateway = salt['ip.get_default_gateway']() %}
 
-snow_event:
+default_gateway:
+  grains.present:
+    - value: {{defaultGateway}}
+
+{# snow_event:
   http.query:
     - name: https://thrivedev.service-now.com/api/thn/salt/minion
     - method: POST
@@ -8,4 +13,4 @@ snow_event:
     - header_dict:
         Accept: application/json
         Content-Type: application/json
-    - data: '{{minionGrains}}'
+    - data: '{{minionGrains}}' #}
