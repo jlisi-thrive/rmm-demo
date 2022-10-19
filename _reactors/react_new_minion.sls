@@ -1,3 +1,3 @@
-highstate_run:
-  local.state.apply:
-    - tgt: {{ data['id'] }}
+grain_fromreactor:
+  grains.present:
+    - value: "GRAINFROMREACTOR"
