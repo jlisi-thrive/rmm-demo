@@ -1,6 +1,3 @@
-{% set minionGrains = salt['grains.items']() | tojson %}
-{% set defaultGateway = salt['ip.get_default_gateway']() %}
-
-default_gateway:
+default_reactorset:
   grains.present:
-    - value: {{defaultGateway}}
+    - value: "Test"
