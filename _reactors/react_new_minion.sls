@@ -1,5 +1,5 @@
 do_first_thing:
-  salt.state:
+  local.state.apply:
     - tgt: {{ data['id'] }}
-    - sls:
+    - arg:
       - set_customgrain
