@@ -1,5 +1,5 @@
-do_second_thing:
-  salt.state:
-    - tgt: '*'
-    - sls:
-      - top.sls
+{# When an Ink server connects, run state.apply. #}
+highstate_run:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - ret: smtp
