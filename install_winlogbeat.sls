@@ -1,3 +1,4 @@
 winlogbeat:
-    pkg.installed:
-        - version: 'latest'
+  pkg.installed:
+    - pkgs:
+      - winlogbeat
