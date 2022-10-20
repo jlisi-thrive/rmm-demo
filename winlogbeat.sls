@@ -5,10 +5,12 @@
 # - install.ps1
 # - remove.cmd
 
+{% set versions = ['8.4.3'] %}
+
 winlogbeat:
-  '7.12.1':
+  '{{ version }}':
     full_name: 'Winlogbeat'
     installer: 'salt://install.cmd'
-    install_flags: "7.12.1"
+    install_flags: {{ version }}
     uninstaller: 'salt://remove.cmd'
     cache_dir: True
