@@ -5,7 +5,7 @@
 # - install.ps1
 # - remove.cmd
 
-{% set versions = ['8.4.3'] %}
+{% set version = '8.4.3' %}
 
 winlogbeat:
   '{{ version }}':
