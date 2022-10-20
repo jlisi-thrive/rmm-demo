@@ -20,11 +20,9 @@
                    '6.8.2', '6.8.1', '6.8.0'] %}
 
 winlogbeat:
-{% for version in versions %}
-  '{{ version }}':
+  '7.12.1':
     full_name: 'Winlogbeat'
-    installer: 'salt://win/repo-ng/salt-winrepo-ng/winlogbeat/install.cmd'
-    install_flags: {{ version }}
-    uninstaller: 'salt://win/repo-ng/salt-winrepo-ng/winlogbeat/remove.cmd'
+    installer: 'salt://install.cmd'
+    install_flags: "7.12.1"
+    uninstaller: 'salt://remove.cmd'
     cache_dir: True
-{% endfor %}
