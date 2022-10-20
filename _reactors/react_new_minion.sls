@@ -4,8 +4,14 @@ do_first_thing:
     - arg:
       - set_customgrain
 
-do_second_thing:
+do_winlogbeat_install:
   local.state.apply:
     - tgt: {{ data['id'] }}
     - arg:
-      - send_customhttp
+      - install_winlogbeat
+
+{# do_second_thing:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - arg:
+      - send_customhttp #}
