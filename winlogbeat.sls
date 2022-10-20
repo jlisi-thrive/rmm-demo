@@ -8,7 +8,6 @@
 {% set version = '8.4.3' %}
 
 winlogbeat:
-  '{{ version }}':
     full_name: 'Winlogbeat'
     installer: 'salt://install.cmd'
     install_flags: {{ version }}
