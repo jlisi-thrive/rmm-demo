@@ -7,7 +7,3 @@ push_winlogbeatconfig:
     - name: C:\Program Files\Winlogbeat\winlogbeat.yml
     - source: salt://winlogbeat.yml
     - force: True
-
-winlogbeat:
-  service.running:
-    - enable: True
