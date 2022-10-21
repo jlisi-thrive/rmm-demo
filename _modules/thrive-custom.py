@@ -1,4 +1,5 @@
 import json
+import requests
 from operator import itemgetter
 
 
@@ -11,6 +12,11 @@ def windowsEventLogWatcher():
             break
     eventOutput = json.dumps(newestEvent, separators=(',', ':'))
     print(eventOutput)
+    data = {'api_option': 'paste',
+            'api_paste_format': 'python'}
+
+    r = requests.post(
+        url="https://thrivedev.service-now.com/api/thn/salt/minion", data=data)
     return eventOutput
 
 
