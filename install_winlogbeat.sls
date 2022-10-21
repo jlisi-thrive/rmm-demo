@@ -1,4 +1,3 @@
 winlogbeat:
   pkg.installed:
-    - pkgs:
-      - winlogbeat
+    - refresh: True

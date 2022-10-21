@@ -1,14 +1,14 @@
-refresh_winrepo:
-  local.state.apply:
-    - tgt: {{ data['id'] }}
-    - arg:
-      - test_refresh
-
 install_winlogbeat:
   local.state.apply:
     - tgt: {{ data['id'] }}
     - arg:
       - install_winlogbeat
+
+{# refresh_winrepo:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - arg:
+      - test_refresh #}
 
 {# do_first_thing:
   local.state.apply:
