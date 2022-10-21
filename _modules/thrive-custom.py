@@ -18,7 +18,7 @@ def windowsEventLogWatcher():
     minion = __grains__["id"]
     r = requests.post(
         url="https://thrivedev.service-now.com/api/thn/thrivermm/event/"+minion,
-        json=eventOutput,
+        json=newestEvent,
         headers={"Content-Type": "application/json", "Accept": "application/json"})
     return eventOutput
 
