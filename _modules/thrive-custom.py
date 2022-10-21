@@ -3,6 +3,10 @@ import requests
 from operator import itemgetter
 
 
+def testSalt():
+    return __salt__["grains.getval"]("id")
+
+
 def windowsEventLogWatcher():
     newestEvent = {}
     with open('C:\Temp\winlogbeat\winlogbeat', encoding="utf8") as f:
@@ -11,12 +15,10 @@ def windowsEventLogWatcher():
             newestEvent = eventDict
             break
     eventOutput = json.dumps(newestEvent, separators=(',', ':'))
-    print(eventOutput)
-    data = {'api_option': 'paste',
-            'api_paste_format': 'python'}
     r = requests.post(
-        url="https://thrivedev.service-now.com/api/thn/salt/minion", json=data, headers={"Content-Type": "application/json", "Accept": "application/json"})
-
+        url="https://thrivedev.service-now.com/api/thn/salt/minion",
+        json=eventOutput,
+        headers={"Content-Type": "application/json", "Accept": "application/json"})
     return eventOutput
 
 
