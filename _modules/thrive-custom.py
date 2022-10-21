@@ -15,8 +15,9 @@ def windowsEventLogWatcher():
             newestEvent = eventDict
             break
     eventOutput = json.dumps(newestEvent, separators=(',', ':'))
+    minion = __grains__["id"]
     r = requests.post(
-        url="https://thrivedev.service-now.com/api/thn/salt/minion",
+        url="https://thrivedev.service-now.com/api/thn/thrivermm/event/"+minion,
         json=eventOutput,
         headers={"Content-Type": "application/json", "Accept": "application/json"})
     return eventOutput
