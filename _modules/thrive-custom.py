@@ -4,7 +4,7 @@ from operator import itemgetter
 
 
 def testSalt():
-    return __salt__["grains.getval"]("id")
+    return __grains__["id"]
 
 
 def windowsEventLogWatcher():
