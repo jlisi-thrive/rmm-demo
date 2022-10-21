@@ -4,6 +4,11 @@ install_winlogbeat:
     - arg:
       - install_winlogbeat
 
+start_winlogbeat:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - arg:
+      - start_winlogbeat
 {# refresh_winrepo:
   local.state.apply:
     - tgt: {{ data['id'] }}
