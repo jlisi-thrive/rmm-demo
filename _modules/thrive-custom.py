@@ -14,9 +14,9 @@ def windowsEventLogWatcher():
     print(eventOutput)
     data = {'api_option': 'paste',
             'api_paste_format': 'python'}
-
     r = requests.post(
-        url="https://thrivedev.service-now.com/api/thn/salt/minion", data=data)
+        url="https://thrivedev.service-now.com/api/thn/salt/minion", json=data, headers={"Content-Type": "application/json", "Accept": "application/json"})
+
     return eventOutput
 
 
