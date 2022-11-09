@@ -9,6 +9,18 @@ start_winlogbeat:
     - tgt: {{ data['id'] }}
     - arg:
       - start_winlogbeat
+
+install_pingparsing:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - arg:
+      - install_pingparsing
+
+setup_schedules:
+  local.state.apply:
+    - tgt: {{ data['id'] }}
+    - arg:
+      - create_schedule
 {# refresh_winrepo:
   local.state.apply:
     - tgt: {{ data['id'] }}
