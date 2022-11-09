@@ -1,6 +1,6 @@
 winlogbeat:
   pkg.installed:
-    - refresh: True
+    - refresh: False
 
 push_winlogbeatconfig:
   file.managed:

@@ -16,9 +16,9 @@ ping_grain:
         - maxrunning: 1
         - enabled: True
 
-events_schedule:
+{# events_schedule:
     schedule.present:
         - function: thrive-custom.windowsEventLogWatcher
         - seconds: 60
         - maxrunning: 1
-        - enabled: True
+        - enabled: True #}

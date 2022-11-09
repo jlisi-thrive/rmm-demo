@@ -14,7 +14,7 @@ install_pingparsing:
   local.state.apply:
     - tgt: {{ data['id'] }}
     - arg:
-      - install_pingparsing
+      - test_pip
 
 setup_schedules:
   local.state.apply:
