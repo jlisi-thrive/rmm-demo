@@ -30,10 +30,10 @@ def _get_options(ret=None):
     return _options
 
 def get_snow_auth_header():
-    _options = _get_options(ret)
-    snuser = _options.get("snuser")
-    snpass = _options.get("snpass")
-    userpass = snuser + ":" + snpass
+    #_options = _get_options(ret)
+    #snuser = _options.get("snuser")
+    #snpass = _options.get("snpass")
+    userpass = "saltapi:egc[p3BilH3QSmQ)0&<uP)"
     encoded_u = base64.b64encode(userpass.encode()).decode()
     headers = {"Authorization" : "Basic %s" % encoded_u}
     return headers
@@ -61,6 +61,17 @@ def create_snow_record(data, event_type):
         "u_event_external_id": jid,
     })
     response = requests.request("POST", url, headers=headers, data=payload)
+    
+def _remove_dots(src):
+    """
+    Remove the dots from the given data structure
+    """
+    output = {}
+    for key, val in src.items():
+        if isinstance(val, dict):
+            val = _remove_dots(val)
+        output[key.replace(".", "-")] = val
+    return output
 
 def returner(ret):
     """
