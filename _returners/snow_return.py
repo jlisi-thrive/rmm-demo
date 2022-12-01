@@ -57,7 +57,7 @@ def create_snow_record(data, event_type):
         "u_source": "ThriveRMM",
         "u_event_type": event_type,
         "u_title": "Test",
-        "u_details": data,
+        "u_details": json.dumps(data),
         "u_event_external_id": jid,
     })
     response = requests.request("POST", url, headers=headers, data=payload)
