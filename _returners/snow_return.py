@@ -49,6 +49,7 @@ def get_snow_record(id):
 def create_snow_record(data, event_type):
     minion_id = data.get("minion")
     jid = data.get("jid")
+    fun = data.get("fun")
     headers = get_snow_auth_header()
     url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage"
     payload = json.dumps({
@@ -56,7 +57,7 @@ def create_snow_record(data, event_type):
         "u_account_external_id": minion_id,
         "u_source": "ThriveRMM",
         "u_event_type": event_type,
-        "u_title": "Test",
+        "u_title": fun,
         "u_details": json.dumps(data),
         "u_event_external_id": jid,
     })
