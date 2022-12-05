@@ -51,17 +51,24 @@ def create_snow_record(data, event_type):
     jid = data.get("jid")
     fun = data.get("fun")
     headers = get_snow_auth_header()
-    url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage"
+    # url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage"
+    # payload = json.dumps({
+    #     "u_config_external_id": minion_id,
+    #     "u_account_external_id": minion_id,
+    #     "u_source": "ThriveRMM",
+    #     "u_event_type": event_type,
+    #     "u_title": fun,
+    #     "u_details": json.dumps(data),
+    #     "u_event_external_id": jid,
+    # })
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns"
     payload = json.dumps({
-        "u_config_external_id": minion_id,
-        "u_account_external_id": minion_id,
-        "u_source": "ThriveRMM",
-        "u_event_type": event_type,
-        "u_title": fun,
-        "u_details": json.dumps(data),
-        "u_event_external_id": jid,
+        "u_minion": minion_id,
+        "u_jid": jid,
+        "u_function": fun,
+        "u_return_data": json.dumps(data)
     })
-    response = requests.request("POST", url, headers=headers, data=payload)
+    requests.request("POST", url, headers=headers, data=payload)
     
 def _remove_dots(src):
     """
