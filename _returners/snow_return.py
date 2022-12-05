@@ -41,7 +41,7 @@ def get_snow_auth_header():
 def get_snow_record(id):
     headers = get_snow_auth_header()
     #url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage?sysparm_query=u_event_external_id%3D"+id
-    url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage?sysparm_query=u_event_external_id%3D"+id
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_jid%3D"+id
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
     record = resultJson['result'][0]
@@ -144,7 +144,7 @@ def get_load(jid):
     #conn, mdb = _get_conn(ret=None)
     #return mdb.jobs.find_one({"jid": jid}, {"_id": 0})
     snowRecord = get_snow_record(jid)
-    details = snowRecord['u_details']
+    details = snowRecord['u_return_data']
     return details
     
 def get_jid(jid):
@@ -153,8 +153,8 @@ def get_jid(jid):
     """
     ret = {}
     rdata = get_snow_record(jid)
-    minionId = rdata['u_config_external_id']
-    full_return = rdata['u_details']['full_ret']
+    minionId = rdata['u_minion']
+    full_return = rdata['u_return_data']['full_ret']
     if rdata:
             minion = minionId
             # return data in the format {<minion>: { <unformatted full return data>}}
