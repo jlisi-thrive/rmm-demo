@@ -40,6 +40,7 @@ def get_snow_auth_header():
 
 def get_snow_record(id):
     headers = get_snow_auth_header()
+    #url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage?sysparm_query=u_event_external_id%3D"+id
     url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage?sysparm_query=u_event_external_id%3D"+id
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
@@ -61,14 +62,27 @@ def create_snow_record(data, event_type):
     #     "u_details": json.dumps(data),
     #     "u_event_external_id": jid,
     # })
-    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns"
-    payload = json.dumps({
-        "u_minion": minion_id,
-        "u_jid": jid,
-        "u_function": fun,
-        "u_return_data": json.dumps(data)
-    })
-    requests.request("POST", url, headers=headers, data=payload)
+    url = ""
+    if(event_type == "SALT_RETURN"):
+        url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns"
+        payload = json.dumps({
+            "u_minion": minion_id,
+            "u_jid": jid,
+            "u_function": fun,
+            "u_return_data": json.dumps(data)
+        })
+        requests.request("POST", url, headers=headers, data=payload)
+    else:
+        url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_jobs"
+        payload = json.dumps({
+            "u_jid": jid,
+            "u_function": fun,
+            "u_return_data": json.dumps(data)
+        })
+        requests.request("POST", url, headers=headers, data=payload)
+    
+
+    
     
 def _remove_dots(src):
     """
