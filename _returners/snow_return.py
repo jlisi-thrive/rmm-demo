@@ -142,7 +142,7 @@ def get_load(jid):
     #conn, mdb = _get_conn(ret=None)
     #return mdb.jobs.find_one({"jid": jid}, {"_id": 0})
     snowRecord = get_snow_record(jid)
-    details = snowRecord['u_return_data']
+    details = json.loads(snowRecord['u_return_data'])
     return details
     
 def get_jid(jid):
@@ -151,8 +151,9 @@ def get_jid(jid):
     """
     ret = {}
     rdata = get_snow_record(jid)
+    details = json.loads(rdata['u_return_data'])
     minionId = rdata['u_minion']
-    full_return = rdata['u_return_data']['full_ret']
+    full_return = details['full_ret']
     if rdata:
             minion = minionId
             # return data in the format {<minion>: { <unformatted full return data>}}
