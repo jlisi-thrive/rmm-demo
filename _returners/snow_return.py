@@ -35,7 +35,7 @@ def get_snow_auth_header():
     #snpass = _options.get("snpass")
     userpass = "saltapi:kUa=Dur0"
     encoded_u = base64.b64encode(userpass.encode()).decode()
-    headers = {"Authorization" : "Basic %s" % encoded_u}
+    headers = {"Authorization" : "Basic %s" % encoded_u, "Accept": "application/json"}
     return headers
 
 def get_snow_record(id):
@@ -80,8 +80,6 @@ def create_snow_record(data, event_type):
             "u_return_data": json.dumps(data)
         })
         requests.request("POST", url, headers=headers, data=payload)
-    
-
     
     
 def _remove_dots(src):
