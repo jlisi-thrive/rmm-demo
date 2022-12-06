@@ -194,14 +194,21 @@ def get_jids():
     ret = {}
     for record in records:
         jid = record['u_jid']
-        ret[jid] = {
-            "Function": record['u_function'],
-            "Arguments": [],
-            "Target": record["u_minion"],
-            "Target-type": "glob",
-            "User": "root",
-        }
-        #ret[jid] = salt.utils.jid.format_jid_instance(jid, formattedRecord)
+        # ret[jid] = {
+        #     "Function": record['u_function'],
+        #     "Arguments": [],
+        #     "Target": record["u_minion"],
+        #     "Target-type": "glob",
+        #     "User": "root",
+        # }
+        # formattedRecord = {
+        #     "fun": record["u_function"],
+        #     "arg": [],
+        #     "tgt": record["u_minion"],
+        #     "tgt_type": "glob",
+        #     "user": "root"
+        # }
+        ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
     return ret
     
 
