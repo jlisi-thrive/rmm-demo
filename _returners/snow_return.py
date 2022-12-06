@@ -47,6 +47,14 @@ def get_snow_record(id):
     record = resultJson['result'][0]
     return record
 
+def get_snow_fun_records(fun):
+    headers = get_snow_auth_header()
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_function%3D"+fun
+    response = requests.request("GET", url, headers=headers)
+    resultJson = response.json()
+    records = resultJson['result']
+    return records
+
 def create_snow_record(data, event_type):
     minion_id = data.get("minion")
     jid = data.get("jid")
@@ -79,8 +87,7 @@ def create_snow_record(data, event_type):
             "u_function": fun,
             "u_return_data": json.dumps(data)
         })
-        requests.request("POST", url, headers=headers, data=payload)
-    
+        requests.request("POST", url, headers=headers, data=payload)  
     
 def _remove_dots(src):
     """
@@ -164,21 +171,27 @@ def get_fun(fun):
     """
     Return the most recent jobs that have executed the named function
     """
-    conn, mdb = _get_conn(ret=None)
+    #conn, mdb = _get_conn(ret=None)
     ret = {}
-    #rdata = mdb.saltReturns.find_one({"fun": fun}, {"_id": 0})
-    #if rdata:
-    #    ret = rdata
-    return {}
+    rdata = get_snow_fun_records(fun)
+    parsed = json.loads(rdata)
+    ret = rdata
+    return ret
 
 def get_minions():
     """
     Return a list of minions
     """
-    ret = []
-    #name = mdb.saltReturns.distinct("minion")
-    #ret.append(name)
-    return {}
+    headers = get_snow_auth_header()
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_minionISNOTEMPTY"
+    response = requests.request("GET", url, headers=headers)
+    resultJson = response.json()
+    records = resultJson['result']
+    minionArray = []
+    for record in records:
+        minionArray.append(record['u_minion'])
+
+    return set(minionArray)
 
 def get_jids():
     """
@@ -192,7 +205,16 @@ def get_jids():
     # for r in result:
     #     jid = r["_id"]
     #     ret[jid] = salt.utils.jid.format_jid_instance(jid, r["value"])
-    return {}
+    headers = get_snow_auth_header()
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_minionISNOTEMPTY"
+    response = requests.request("GET", url, headers=headers)
+    resultJson = response.json()
+    records = resultJson['result']
+    ret = {}
+    for record in records:
+        jid = record['u_jid']
+        ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
+    return ret
     
 
 def prep_jid(nocache=False, passed_jid=None):  # pylint: disable=unused-argument
