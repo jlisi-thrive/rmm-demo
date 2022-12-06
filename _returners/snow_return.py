@@ -53,7 +53,10 @@ def get_snow_fun_records(fun):
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
     records = resultJson['result']
-    return records
+    minionArray = []
+    for record in records:
+        minionArray.append(record['u_minion'])
+    return set(minionArray)
 
 def create_snow_record(data, event_type):
     minion_id = data.get("minion")
@@ -175,7 +178,8 @@ def get_fun(fun):
     ret = {}
     rdata = get_snow_fun_records(fun)
     parsed = json.loads(rdata)
-    ret = rdata
+    #ret = rdata
+    ret = get_snow_fun_records(fun)
     return ret
 
 def get_minions():
