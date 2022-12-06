@@ -201,7 +201,7 @@ def get_jids():
             "tgt_type": "glob",
             "user": "root"
         }
-        ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
+        ret[jid] = salt.utils.jid.format_jid_instance(jid, formattedRecord)
     return ret
     
 
