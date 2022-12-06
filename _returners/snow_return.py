@@ -40,7 +40,6 @@ def get_snow_auth_header():
 
 def get_snow_record(id):
     headers = get_snow_auth_header()
-    #url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage?sysparm_query=u_event_external_id%3D"+id
     url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_jid%3D"+id
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
@@ -63,16 +62,6 @@ def create_snow_record(data, event_type):
     jid = data.get("jid")
     fun = data.get("fun")
     headers = get_snow_auth_header()
-    # url = "https://thrivedev.service-now.com/api/now/table/u_external_event_stage"
-    # payload = json.dumps({
-    #     "u_config_external_id": minion_id,
-    #     "u_account_external_id": minion_id,
-    #     "u_source": "ThriveRMM",
-    #     "u_event_type": event_type,
-    #     "u_title": fun,
-    #     "u_details": json.dumps(data),
-    #     "u_event_external_id": jid,
-    # })
     url = ""
     if(event_type == "SALT_RETURN"):
         url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns"
@@ -149,13 +138,11 @@ def get_load(jid):
     """
     Return the load associated with a given job id from SNOW
     """
-    #conn, mdb = _get_conn(ret=None)
-    #return mdb.jobs.find_one({"jid": jid}, {"_id": 0})
     snowRecord = get_snow_record(jid)
-    details = json.loads(snowRecord['u_return_data'])
     return salt.utils.json.loads(snowRecord['u_return_data'])
     
-def get_jid(jid):
+#Might need to check this when running against multiple minions    
+def get_jid(jid): 
     """
     Return the return information associated with a jid
     """
@@ -174,11 +161,9 @@ def get_fun(fun):
     """
     Return the most recent jobs that have executed the named function
     """
-    #conn, mdb = _get_conn(ret=None)
     ret = {}
     rdata = get_snow_fun_records(fun)
     parsed = json.loads(rdata)
-    #ret = rdata
     ret = get_snow_fun_records(fun)
     return ret
 
@@ -209,7 +194,14 @@ def get_jids():
     ret = {}
     for record in records:
         jid = record['u_jid']
-        ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
+        formattedRecord = {
+            "fun": record["u_function"],
+            "arg": [],
+            "tgt": record["u_minion"],
+            "tgt_type": "glob",
+            "user": "root"
+        }
+        ret[jid] = salt.utils.jid.format_jid_instance(jid, formattedRecord)
     return ret
     
 
