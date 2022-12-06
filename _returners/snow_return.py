@@ -153,7 +153,7 @@ def get_load(jid):
     #return mdb.jobs.find_one({"jid": jid}, {"_id": 0})
     snowRecord = get_snow_record(jid)
     details = json.loads(snowRecord['u_return_data'])
-    return details
+    return salt.utils.json.loads(snowRecord['u_return_data'])
     
 def get_jid(jid):
     """
@@ -167,7 +167,7 @@ def get_jid(jid):
     if rdata:
             minion = minionId
             # return data in the format {<minion>: { <unformatted full return data>}}
-            ret[minion] = full_return
+            ret[minion] = salt.utils.json.loads(full_return)
     return ret
 
 def get_fun(fun):
@@ -201,14 +201,6 @@ def get_jids():
     """
     Return a list of job ids
     """
-    #conn, mdb = _get_conn(ret=None)
-    # map = "function() { emit(this.jid, this); }"
-    # reduce = "function (key, values) { return values[0]; }"
-    # result = mdb.jobs.inline_map_reduce(map, reduce)
-    # ret = {}
-    # for r in result:
-    #     jid = r["_id"]
-    #     ret[jid] = salt.utils.jid.format_jid_instance(jid, r["value"])
     headers = get_snow_auth_header()
     url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_minionISNOTEMPTY"
     response = requests.request("GET", url, headers=headers)
