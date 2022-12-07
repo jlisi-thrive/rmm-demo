@@ -215,7 +215,7 @@ def get_jids():
             "Target-type": "glob",
             "User": "root",
         }
-    return ret
+    return json.dumps(ret)
     
 
 def prep_jid(nocache=False, passed_jid=None):  # pylint: disable=unused-argument
