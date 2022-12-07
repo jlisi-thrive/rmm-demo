@@ -149,7 +149,7 @@ def get_jid(jid):
     """
     Return the return information associated with a jid
     """
-    print("in get_jid");
+    print("in get_jid")
     ret = {}
     rdata = get_snow_record(jid)
     details = json.loads(rdata['u_return_data'])
