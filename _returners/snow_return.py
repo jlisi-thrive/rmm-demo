@@ -129,13 +129,6 @@ def save_load(jid, load, minions=None):
     Save the load for a given job id
     """
     create_snow_record(load, "SALT_JOB")
-    #to_save = _safe_copy(load)
-    # Go to SNOW Jobs Table
-    #if PYMONGO_VERSION > _LooseVersion("2.3"):
-        # using .copy() to ensure original data for load is unchanged
-    #    mdb.jobs.insert_one(to_save)
-    #else:
-    #    mdb.jobs.insert(to_save)
 
 def save_minions(jid, minions, syndic_id=None):  # pylint: disable=unused-argument
     """
@@ -190,6 +183,13 @@ def get_minions():
     uniqueMinions = set(minionArray)
     return uniqueMinions
 
+def prep_jid(nocache=False, passed_jid=None):  # pylint: disable=unused-argument
+    """
+    Do any work necessary to prepare a JID, including sending a custom id
+    """
+    print("Print from the returner")
+    return passed_jid if passed_jid is not None else salt.utils.jid.gen_jid(__opts__)
+
 def get_jids():
     """
     Return a list of job ids
@@ -216,10 +216,3 @@ def get_jids():
             "User": "root",
         }
     return ret
-    
-
-def prep_jid(nocache=False, passed_jid=None):  # pylint: disable=unused-argument
-    """
-    Do any work necessary to prepare a JID, including sending a custom id
-    """
-    return passed_jid if passed_jid is not None else salt.utils.jid.gen_jid(__opts__)
