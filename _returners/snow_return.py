@@ -48,7 +48,7 @@ def get_snow_record(id):
 
 def get_snow_job_record(id):
     headers = get_snow_auth_header()
-    url = "https://thrivedev.service-now.com/api/now/tableu_thrive_monitoring_jobs?sysparm_query=u_jid%3D"+id
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_jobs?sysparm_query=u_jid%3D"+id
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
     record = resultJson['result'][0]
