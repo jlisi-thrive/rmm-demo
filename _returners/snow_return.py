@@ -195,7 +195,7 @@ def get_jids():
     Return a list of job ids
     """
     headers = get_snow_auth_header()
-    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_minionISNOTEMPTY"
+    url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_jobs"
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
     records = resultJson['result']
