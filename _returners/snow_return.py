@@ -46,16 +46,24 @@ def get_snow_record(id):
     record = resultJson['result'][0]
     return record
 
+def get_snow_job_record(id):
+    headers = get_snow_auth_header()
+    url = "https://thrivedev.service-now.com/api/now/tableu_thrive_monitoring_jobs?sysparm_query=u_jid%3D"+id
+    response = requests.request("GET", url, headers=headers)
+    resultJson = response.json()
+    record = resultJson['result'][0]
+    return record
+
 def get_snow_fun_records(fun):
     headers = get_snow_auth_header()
     url = "https://thrivedev.service-now.com/api/now/table/u_thrive_monitoring_job_returns?sysparm_query=u_function%3D"+fun
     response = requests.request("GET", url, headers=headers)
     resultJson = response.json()
     records = resultJson['result']
-    minionArray = []
-    for record in records:
-        minionArray.append(record['u_minion'])
-    return set(minionArray)
+    #minionArray = []
+    #for record in records:
+     #   minionArray.append(record['u_minion'])
+    return records
 
 def create_snow_record(data, event_type):
     minion_id = data.get("minion")
@@ -138,7 +146,7 @@ def get_load(jid):
     """
     Return the load associated with a given job id from SNOW
     """
-    snowRecord = get_snow_record(jid)
+    snowRecord = get_snow_job_record(jid)
     return salt.utils.json.loads(snowRecord['u_return_data'])
     
 #Might need to check this when running against multiple minions    
@@ -154,7 +162,7 @@ def get_jid(jid):
     if rdata:
             minion = minionId
             # return data in the format {<minion>: { <unformatted full return data>}}
-            ret[minion] = salt.utils.json.loads(full_return)
+            ret[minion] = full_return
     return ret
 
 def get_fun(fun):
@@ -162,8 +170,8 @@ def get_fun(fun):
     Return the most recent jobs that have executed the named function
     """
     ret = {}
-    rdata = get_snow_fun_records(fun)
-    parsed = json.loads(rdata)
+    #rdata = get_snow_fun_records(fun)
+    #parsed = json.loads(rdata)
     ret = get_snow_fun_records(fun)
     return ret
 
@@ -179,8 +187,8 @@ def get_minions():
     minionArray = []
     for record in records:
         minionArray.append(record['u_minion'])
-
-    return set(minionArray)
+    uniqueMinions = set(minionArray)
+    return uniqueMinions
 
 def get_jids():
     """
@@ -194,13 +202,13 @@ def get_jids():
     ret = {}
     for record in records:
         jid = record['u_jid']
-        # ret[jid] = {
-        #     "Function": record['u_function'],
-        #     "Arguments": [],
-        #     "Target": record["u_minion"],
-        #     "Target-type": "glob",
-        #     "User": "root",
-        # }
+        ret[jid] = {
+            "Function": record['u_function'],
+            "Arguments": [],
+            "Target": record["u_minion"],
+            "Target-type": "glob",
+            "User": "root",
+        }
         # formattedRecord = {
         #     "fun": record["u_function"],
         #     "arg": [],
@@ -208,7 +216,7 @@ def get_jids():
         #     "tgt_type": "glob",
         #     "user": "root"
         # }
-        ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
+        #ret[jid] = salt.utils.jid.format_jid_instance(jid, record)
     return ret
     
 
